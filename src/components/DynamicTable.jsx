@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, ChevronUp, ChevronsUpDown, ChevronLeft, ChevronRight, Inbox } from 'lucide-react';
 import './DynamicTable.css';
 
-export default function DynamicTable({ columns, data, loading }) {
+export default function DynamicTable({ columns, data }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,45 +108,34 @@ export default function DynamicTable({ columns, data, loading }) {
 
       {/* Responsive Table */}
       <div className="table-responsive">
-        {loading || paginatedData.length > 0 ? (
+        {paginatedData.length > 0 ? (
           <table className="custom-table">
             <thead>
               <tr>
                 {columns.map((col) => (
                   <th
                     key={col.key}
-                    onClick={() => !loading && handleSort(col.key, col.sortable)}
-                    style={{ width: col.width || 'auto', cursor: (col.sortable && !loading) ? 'pointer' : 'default' }}
+                    onClick={() => handleSort(col.key, col.sortable)}
+                    style={{ width: col.width || 'auto', cursor: col.sortable ? 'pointer' : 'default' }}
                   >
                     <div className="th-content">
                       <span>{col.header}</span>
-                      {!loading && renderSortIcon(col)}
+                      {renderSortIcon(col)}
                     </div>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={columns.length} style={{ borderBottom: 'none' }}>
-                    <div className="table-spinner-container">
-                      <div className="table-spinner"></div>
-                      <span className="loading-text">Loading records...</span>
-                    </div>
-                  </td>
+              {paginatedData.map((row, rowIndex) => (
+                <tr key={row.id || rowIndex}>
+                  {columns.map((col) => (
+                    <td key={col.key}>
+                      {col.render ? col.render(row[col.key], row) : row[col.key]}
+                    </td>
+                  ))}
                 </tr>
-              ) : (
-                paginatedData.map((row, rowIndex) => (
-                  <tr key={row.id || rowIndex}>
-                    {columns.map((col) => (
-                      <td key={col.key}>
-                        {col.render ? col.render(row[col.key], row) : row[col.key]}
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              )}
+              ))}
             </tbody>
           </table>
         ) : (
@@ -178,7 +167,7 @@ export default function DynamicTable({ columns, data, loading }) {
               onClick={() => setCurrentPage((prev) => prev + 1)}
             >
               <span>Next</span>
-              <ChevronRight size={16} />
+              <ChevronRight size={5} />
             </button>
           </div>
         </div>

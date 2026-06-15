@@ -7,8 +7,6 @@ import { getLeads } from "../lib/apis";
 
 export default function Leads() {
 
-
-
   const [leadsData, setLeadsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
