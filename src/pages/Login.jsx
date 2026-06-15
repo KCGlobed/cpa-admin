@@ -52,7 +52,7 @@ export default function Login({ onLoginSuccess }) {
 
   return (
     <div className="login-container">
-      <div className="login-card glass-panel animate-fade-in">
+      <div className="login-card animate-fade-in">
         <div className="login-header">
           <div className="login-logo">
             <LogIn size={28} />
@@ -71,13 +71,13 @@ export default function Login({ onLoginSuccess }) {
 
           <div className="form-group">
             <label htmlFor="email">
-              <Mail size={14} /> Email Address
+              Email Address
             </label>
             <div className="input-wrapper">
               <input
                 id="email"
                 type="email"
-                placeholder="admin@gmail.com"
+                placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
@@ -89,7 +89,7 @@ export default function Login({ onLoginSuccess }) {
 
           <div className="form-group">
             <label htmlFor="password">
-              <Lock size={14} /> Password
+             Password
             </label>
             <div className="input-wrapper">
               <input

@@ -27,18 +27,17 @@
 .search-input {
   width: 100%;
   padding: 10px 16px 10px 38px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  /* background: var(--bg-tertiary); */
+  border: 1px solid black;
   border-radius: 8px;
-  color: var(--text-primary);
+  color: black;
   font-size: 14px;
   transition: all 0.2s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  border-color: black;
 }
 
 .search-icon {
@@ -73,7 +72,7 @@
 }
 
 .custom-table th:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(239, 233, 233);
   color: var(--text-primary);
 }
 
@@ -154,9 +153,9 @@
 }
 
 .pagination-btn {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid black;
+  color: black;
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 13px;
@@ -169,8 +168,7 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  border-color: var(--accent-primary);
-  background: rgba(99, 102, 241, 0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .pagination-btn:disabled {

@@ -3,14 +3,14 @@
 :root {
   /* Colors */
   --bg-primary: #0b0c10;
-  --bg-secondary: #12141c;
+  --bg-secondary: #fdfdfd;
   --bg-tertiary: #1a1d29;
-  --accent-primary: #6366f1; /* Indigo */
-  --accent-secondary: #a855f7; /* Purple */
-  --accent-gradient: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  --accent-primary: #f55be0; /* Indigo */
+  --accent-secondary: #ec5cde; /* Purple */
+  --accent-gradient: #a13e99;
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --text-primary: #a13e99;
+  --text-secondary: #575757;
   --text-muted: #64748b;
   
   --border-color: rgba(255, 255, 255, 0.08);
@@ -107,7 +107,7 @@ body {
   backdrop-filter: var(--backdrop-blur);
   -webkit-backdrop-filter: var(--backdrop-blur);
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
+  /* box-shadow: var(--shadow-sm); */
 }
 
 .animate-fade-in {
