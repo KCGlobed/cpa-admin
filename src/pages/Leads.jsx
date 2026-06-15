@@ -2,18 +2,13 @@ import React from 'react';
 import { TrendingUp, Users, CheckCircle, AlertCircle } from 'lucide-react';
 import DynamicTable from '../components/DynamicTable';
 import './Pages.css';
+import { useEffect, useState } from "react";
+import { getLeads } from "../lib/apis";
 
 export default function Leads() {
-  // Mock data for leads
-  const leadsData = [
-    { id: 'LD-1001', name: 'Alice Johnson', email: 'alice.j@example.com', value: 12000, status: 'active', source: 'Google Ads', date: '2026-06-10' },
-    { id: 'LD-1002', name: 'Bob Smith', email: 'bob.smith@example.com', value: 8500, status: 'contacted', source: 'LinkedIn Ref', date: '2026-06-11' },
-    { id: 'LD-1003', name: 'Charlie Davis', email: 'charlie@example.com', value: 24000, status: 'active', source: 'Direct Traffic', date: '2026-06-12' },
-    { id: 'LD-1004', name: 'David Miller', email: 'david.m@example.com', value: 5000, status: 'lost', source: 'Organic Search', date: '2026-06-12' },
-    { id: 'LD-1005', name: 'Emma Watson', email: 'emma@example.com', value: 18500, status: 'active', source: 'Google Ads', date: '2026-06-13' },
-    { id: 'LD-1006', name: 'Frank Harris', email: 'frank.h@example.com', value: 9800, status: 'contacted', source: 'Newsletter', date: '2026-06-14' },
-    { id: 'LD-1007', name: 'Grace Lee', email: 'grace.l@example.com', value: 32000, status: 'active', source: 'LinkedIn Ref', date: '2026-06-14' },
-  ];
+
+  const [leadsData, setLeadsData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Column definitions for the DynamicTable
   const columns = [
@@ -24,47 +19,59 @@ export default function Leads() {
       render: (val) => <span className="tag-pill">{val}</span>,
     },
     {
-      key: 'name',
-      header: 'Full Name',
+      key: 'full_name',
+      header: 'Name',
       sortable: true,
     },
     {
       key: 'email',
-      header: 'Email Address',
+      header: 'Email',
       sortable: true,
     },
     {
-      key: 'value',
-      header: 'Estimated Value',
-      sortable: true,
-      render: (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val),
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      sortable: true,
-      render: (val) => (
-        <span className={`status-badge ${val}`}>
-          {val}
-        </span>
-      ),
-    },
-    {
-      key: 'source',
-      header: 'Source Campaign',
+      key: 'phone',
+      header: 'Phone',
       sortable: true,
     },
     {
-      key: 'date',
-      header: 'Date Created',
+      key: 'city',
+      header: 'City',
+      sortable: true,
+    },
+    {
+      key: 'state',
+      header: 'State',
+      sortable: true,
+    },
+    {
+      key: 'created_at',
+      header: 'Created at',
       sortable: true,
     },
   ];
 
-  // Calculate statistics
-  const totalLeads = leadsData.length;
-  const activeLeads = leadsData.filter(l => l.status === 'active').length;
-  const totalValue = leadsData.reduce((acc, curr) => acc + curr.value, 0);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const data = await getLeads(1, 10);
+
+        console.log("API Response:", data);
+        setLeadsData(data.results || data.data || data || []);
+
+      } catch (error) {
+        console.error("Error fetching leads:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
+  // const totalLeads = leadsData.length;
+  // const activeLeads = leadsData.filter(l => l.status === 'active').length;
+  // const totalValue = leadsData.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
     <div className="page-container animate-fade-in">
@@ -73,7 +80,7 @@ export default function Leads() {
         <p>Track, manage, and engage with your recent marketing leads.</p>
       </div>
 
-      <div className="stats-grid">
+      {/* <div className="stats-grid">
         <div className="stat-card glass-panel">
           <div className="stat-info">
             <span className="stat-label">Total Leads</span>
@@ -117,9 +124,9 @@ export default function Leads() {
             <TrendingUp size={24} style={{ color: 'var(--accent-secondary)' }} />
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <DynamicTable columns={columns} data={leadsData} />
+      <DynamicTable columns={columns} data={leadsData} loading={loading} />
     </div>
   );
 }

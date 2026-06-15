@@ -1,22 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DollarSign, CheckCircle2, RefreshCw, XCircle } from 'lucide-react';
 import DynamicTable from '../components/DynamicTable';
 import './Pages.css';
+import { getPayments } from '../lib/apis';
 
 export default function Payments() {
-  // Mock data for payments
-  const paymentsData = [
-    { id: 'TX-9901', client: 'Alice Johnson', amount: 1250, method: 'Stripe Credit Card', date: '2026-06-12', status: 'paid' },
-    { id: 'TX-9902', client: 'Bob Smith', amount: 450, method: 'PayPal', date: '2026-06-12', status: 'pending' },
-    { id: 'TX-9903', client: 'Charlie Davis', amount: 3500, method: 'Wire Transfer', date: '2026-06-13', status: 'paid' },
-    { id: 'TX-9904', client: 'David Miller', amount: 150, method: 'Stripe Credit Card', date: '2026-06-13', status: 'failed' },
-    { id: 'TX-9905', client: 'Emma Watson', amount: 950, method: 'Apple Pay', date: '2026-06-14', status: 'paid' },
-    { id: 'TX-9906', client: 'Frank Harris', amount: 220, method: 'PayPal', date: '2026-06-14', status: 'pending' },
-    { id: 'TX-9907', client: 'Grace Lee', amount: 5100, method: 'Wire Transfer', date: '2026-06-15', status: 'paid' },
-    { id: 'TX-9908', client: 'Hannah Abbott', amount: 670, method: 'Stripe Credit Card', date: '2026-06-15', status: 'paid' },
-  ];
 
-  // Column definitions for the DynamicTable
+  const [paymentsData, setPaymentsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const data = await getPayments(1, 10);
+
+        console.log("Payments API Response:", data);
+
+        setPaymentsData(data.results || data.data || data || []);
+      } catch (error) {
+        console.error("Error fetching payments:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+
+
+
   const columns = [
     {
       key: 'id',
@@ -25,25 +38,35 @@ export default function Payments() {
       render: (val) => <span className="tag-pill">{val}</span>,
     },
     {
-      key: 'client',
-      header: 'Client / Customer',
+      key: 'full_name',
+      header: 'Full Name',
+      sortable: true,
+    },
+    {
+      key: 'email',
+      header: 'Email',
+      sortable: true,
+      // render: (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val),
+    },
+    {
+      key: 'phone',
+      header: 'Phone',
+      sortable: true,
+    },
+    {
+      key: 'city',
+      header: 'City',
+      sortable: true,
+    },
+    {
+      key: 'state',
+      header: 'State',
       sortable: true,
     },
     {
       key: 'amount',
-      header: 'Amount Paid',
-      sortable: true,
-      render: (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val),
-    },
-    {
-      key: 'method',
-      header: 'Payment Gateway',
-      sortable: true,
-    },
-    {
-      key: 'date',
-      header: 'Payment Date',
-      sortable: true,
+      header: 'Amount',
+      sortable: true
     },
     {
       key: 'status',
@@ -55,6 +78,37 @@ export default function Payments() {
         </span>
       ),
     },
+    {
+      key: 'currency',
+      header: 'Currency',
+      sortable: true,
+    },
+    {
+      key: 'razorpay_order_id',
+      header: 'Razorpay Order Id',
+      sortable: true,
+    },
+    {
+      key: 'razorpay_payment_id',
+      header: 'Razorpay Payment Id',
+      sortable: true,
+    },
+    {
+      key: 'razorpay_signature',
+      header: 'Razorpay Signature',
+      sortable: true,
+    },
+    {
+      key: 'updated_at',
+      header: 'Updated At',
+      sortable: true
+    },
+    {
+      key: 'created_at',
+      header: 'Created At',
+      sortable: true
+    },
+
   ];
 
   // Calculate statistics
@@ -75,7 +129,7 @@ export default function Payments() {
         <p>Monitor transactions, gateway channels, and invoicing records.</p>
       </div>
 
-      <div className="stats-grid">
+      {/* <div className="stats-grid">
         <div className="stat-card glass-panel">
           <div className="stat-info">
             <span className="stat-label">Total Revenue Collected</span>
@@ -121,9 +175,9 @@ export default function Payments() {
             <XCircle size={24} style={{ color: 'var(--danger)' }} />
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <DynamicTable columns={columns} data={paymentsData} />
+      <DynamicTable columns={columns} data={paymentsData} loading={loading} />
     </div>
   );
 }

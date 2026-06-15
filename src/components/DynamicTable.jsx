@@ -167,7 +167,7 @@ export default function DynamicTable({ columns, data }) {
               onClick={() => setCurrentPage((prev) => prev + 1)}
             >
               <span>Next</span>
-              <ChevronRight size={16} />
+              <ChevronRight size={5} />
             </button>
           </div>
         </div>
