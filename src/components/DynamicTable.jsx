@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, ChevronUp, ChevronsUpDown, ChevronLeft, ChevronRight, Inbox } from 'lucide-react';
 import './DynamicTable.css';
 
-export default function DynamicTable({ columns, data }) {
+export default function DynamicTable({ columns, data, loading }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,34 +108,45 @@ export default function DynamicTable({ columns, data }) {
 
       {/* Responsive Table */}
       <div className="table-responsive">
-        {paginatedData.length > 0 ? (
+        {loading || paginatedData.length > 0 ? (
           <table className="custom-table">
             <thead>
               <tr>
                 {columns.map((col) => (
                   <th
                     key={col.key}
-                    onClick={() => handleSort(col.key, col.sortable)}
-                    style={{ width: col.width || 'auto', cursor: col.sortable ? 'pointer' : 'default' }}
+                    onClick={() => !loading && handleSort(col.key, col.sortable)}
+                    style={{ width: col.width || 'auto', cursor: (col.sortable && !loading) ? 'pointer' : 'default' }}
                   >
                     <div className="th-content">
                       <span>{col.header}</span>
-                      {renderSortIcon(col)}
+                      {!loading && renderSortIcon(col)}
                     </div>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((row, rowIndex) => (
-                <tr key={row.id || rowIndex}>
-                  {columns.map((col) => (
-                    <td key={col.key}>
-                      {col.render ? col.render(row[col.key], row) : row[col.key]}
-                    </td>
-                  ))}
+              {loading ? (
+                <tr>
+                  <td colSpan={columns.length} style={{ borderBottom: 'none' }}>
+                    <div className="table-spinner-container">
+                      <div className="table-spinner"></div>
+                      <span className="loading-text">Loading records...</span>
+                    </div>
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                paginatedData.map((row, rowIndex) => (
+                  <tr key={row.id || rowIndex}>
+                    {columns.map((col) => (
+                      <td key={col.key}>
+                        {col.render ? col.render(row[col.key], row) : row[col.key]}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         ) : (

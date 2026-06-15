@@ -6,18 +6,26 @@ import Payments from './pages/Payments';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!(localStorage.getItem('accessToken') || localStorage.getItem('cpa_token'));
+  });
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('cpa_user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [activeView, setActiveView] = useState('leads'); // 'leads' or 'payment'
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Check login state on load
+  // Check login state on load to keep state in sync
   useEffect(() => {
-    const token = localStorage.getItem('cpa_token');
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('cpa_token');
     const storedUser = localStorage.getItem('cpa_user');
     if (token && storedUser) {
       setIsAuthenticated(true);
       setUser(JSON.parse(storedUser));
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
     }
   }, []);
 
