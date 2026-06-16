@@ -7,12 +7,12 @@
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
-  background-color: rgb(244, 243, 243);
+  background-color: rgb(232, 232, 232);
 }
 
 @media (max-width: 768px) {
   .page-container {
-    padding: 90px 20px 40px 20px; /* offset for mobile header */
+    padding: 90px 20px 40px 20px;
   }
 }
 
