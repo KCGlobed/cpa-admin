@@ -10,8 +10,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
-  transition: margin-left 0.3s ease;
+  background-color: rgb(232, 232, 232);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-layout.collapsed .main-content {
+  margin-left: var(--sidebar-collapsed-width);
 }
 
 @media (max-width: 768px) {

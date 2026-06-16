@@ -5,60 +5,55 @@ import './Pages.css';
 import { useEffect, useState } from "react";
 import { getLeads } from "../lib/apis";
 
-export default function Leads() {
-
+export default function Leads({ category }) {
   const [leadsData, setLeadsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [totalItems, setTotalItems] = useState(0);
 
-  // Column definitions for the DynamicTable
+  // Column definitions for the DynamicTable matching screenshot
   const columns = [
     {
-      key: 'id',
-      header: 'Lead ID',
+      key: 'created_at',
+      header: 'DATE',
       sortable: true,
-      render: (val) => <span className="tag-pill">{val}</span>,
+      render: (val) => val ? new Date(val).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : '-'
     },
     {
       key: 'full_name',
-      header: 'Name',
+      header: 'NAME',
       sortable: true,
     },
     {
       key: 'email',
-      header: 'Email',
+      header: 'EMAIL',
       sortable: true,
     },
     {
       key: 'phone',
-      header: 'Phone',
+      header: 'PHONE',
       sortable: true,
     },
     {
       key: 'city',
-      header: 'City',
+      header: 'CITY',
       sortable: true,
     },
     {
       key: 'state',
-      header: 'State',
-      sortable: true,
-    },
-    {
-      key: 'created_at',
-      header: 'Created at',
+      header: 'STATE',
       sortable: true,
     },
   ];
 
-
   useEffect(() => {
     const fetchLeads = async () => {
+      setLoading(true);
       try {
-        const data = await getLeads(1, 10);
-
-        console.log("API Response:", data);
+        const data = await getLeads(currentPage, pageSize);
         setLeadsData(data.results || data.data || data || []);
-
+        setTotalItems(data.count || data.total || data.results?.length || 0);
       } catch (error) {
         console.error("Error fetching leads:", error);
       } finally {
@@ -67,66 +62,30 @@ export default function Leads() {
     };
 
     fetchLeads();
-  }, []);
+  }, [currentPage, pageSize, category]);
 
-  // const totalLeads = leadsData.length;
-  // const activeLeads = leadsData.filter(l => l.status === 'active').length;
-  // const totalValue = leadsData.reduce((acc, curr) => acc + curr.value, 0);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="page-container animate-fade-in">
-      <div className="page-header">
-        <h1>Leads Overview</h1>
-        <p>Track, manage, and engage with your recent marketing leads.</p>
-      </div>
-
-      {/* <div className="stats-grid">
-        <div className="stat-card glass-panel">
-          <div className="stat-info">
-            <span className="stat-label">Total Leads</span>
-            <span className="stat-value">{totalLeads}</span>
-            <span className="stat-change positive">
-              <TrendingUp size={14} />
-              +12% this week
-            </span>
-          </div>
-          <div className="stat-icon-wrapper">
-            <Users size={24} />
-          </div>
-        </div>
-
-        <div className="stat-card glass-panel">
-          <div className="stat-info">
-            <span className="stat-label">Active Leads</span>
-            <span className="stat-value">{activeLeads}</span>
-            <span className="stat-change positive">
-              <CheckCircle size={14} />
-              71.4% conversion
-            </span>
-          </div>
-          <div className="stat-icon-wrapper">
-            <CheckCircle size={24} style={{ color: 'var(--success)' }} />
-          </div>
-        </div>
-
-        <div className="stat-card glass-panel">
-          <div className="stat-info">
-            <span className="stat-label">Total Potential Pipeline</span>
-            <span className="stat-value">
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalValue)}
-            </span>
-            <span className="stat-change positive">
-              <TrendingUp size={14} />
-              Strong pipeline
-            </span>
-          </div>
-          <div className="stat-icon-wrapper">
-            <TrendingUp size={24} style={{ color: 'var(--accent-secondary)' }} />
-          </div>
-        </div>
-      </div> */}
-
-      <DynamicTable columns={columns} data={leadsData} loading={loading} />
+      <DynamicTable 
+        columns={columns} 
+        data={leadsData} 
+        loading={loading}
+        totalItems={totalItems}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        name={"Leads"}
+      />
     </div>
   );
 }

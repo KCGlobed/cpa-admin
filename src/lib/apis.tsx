@@ -22,12 +22,12 @@ export const getLeads = async (page = 1, pageSize = 10) => {
   return response.json();
 };
 
-export const getPayments = async (search = "", pageSize = 10) => {
+export const getPayments = async (page = 1, search = "", pageSize = 10) => {
 
   const token = localStorage.getItem("accessToken");
 
   const response = await fetch(
-    `${BASE_URL}/api/careers/payment_page_list/?search=${search}&pageSize=${pageSize}`,
+    `${BASE_URL}/api/careers/payment_page_list/?search=${search}&pageSize=${pageSize}&page=${page}`,
     {
       method: 'GET',
       headers: {

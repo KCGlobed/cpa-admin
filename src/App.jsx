@@ -13,8 +13,9 @@ function App() {
     const storedUser = localStorage.getItem('cpa_user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [activeView, setActiveView] = useState('leads'); // 'leads' or 'payment'
+  const [activeView, setActiveView] = useState('cpa-leads'); // e.g. 'cpa-leads', 'ea-payment'
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Check login state on load to keep state in sync
   useEffect(() => {
@@ -47,8 +48,11 @@ function App() {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
+  // Parse category and page from activeView
+  const [category, page] = activeView.split('-');
+
   return (
-    <div className="app-layout">
+    <div className={`app-layout ${sidebarCollapsed ? 'collapsed' : ''}`}>
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}
@@ -56,10 +60,12 @@ function App() {
         user={user}
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
+        collapsed={sidebarCollapsed}
+        setCollapsed={setSidebarCollapsed}
       />
       
       <main className="main-content">
-        {activeView === 'leads' ? <Leads /> : <Payments />}
+        {page === 'leads' ? <Leads category={category} /> : <Payments category={category} />}
       </main>
     </div>
   );

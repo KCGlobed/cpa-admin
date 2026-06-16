@@ -25,6 +25,7 @@
   
   /* Layout & Sizing */
   --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
   --header-height: 70px;
   --border-radius: 12px;
   
