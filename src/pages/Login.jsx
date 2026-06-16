@@ -36,12 +36,14 @@ export default function Login({ onLoginSuccess }) {
         throw new Error(data.message || data.detail || 'Login failed. Please verify your credentials.');
       }
 
-      // If success, store data and trigger callback
-      localStorage.setItem('cpa_token', data.token || data.access || 'mock-token-for-admin');
+      const accessToken = data.data?.token?.access || data.token || data.access 
+
+      localStorage.setItem('cpa_token', accessToken);
+      localStorage.setItem('accessToken', accessToken); 
       localStorage.setItem('cpa_user', JSON.stringify({
         email: email,
-        name: data.name || 'Administrator',
-        role: data.role || role
+        name: data.data?.name || data.name,
+        role: data.data?.user_role || data.role || role
       }));
 
       onLoginSuccess(data);

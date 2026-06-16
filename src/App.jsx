@@ -37,6 +37,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('cpa_token');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('cpa_user');
     setIsAuthenticated(false);
     setUser(null);
