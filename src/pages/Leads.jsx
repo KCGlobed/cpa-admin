@@ -23,7 +23,7 @@ export default function Leads({ category }) {
     },
     {
       key: 'full_name',
-      header: 'NAME',
+      header: 'Full NAME',
       sortable: true,
     },
     {

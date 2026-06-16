@@ -19,8 +19,10 @@ export default function DynamicTable({
   const [searchQuery, setSearchQuery] = useState('');
   const [filterName, setFilterName] = useState('');
   const [filterEmail, setFilterEmail] = useState('');
-  const [filterPassword, setFilterPassword] = useState('');
+  // const [filterPassword, setFilterPassword] = useState('');
   const [filterMobile, setFilterMobile] = useState('');
+  // const [filterCity, setFilterCity] = useState('');
+  // const [filterState, setFilterState] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [dateLabel, setDateLabel] = useState('Custom Date');
@@ -46,12 +48,14 @@ export default function DynamicTable({
       onFilterChange({
         search: searchQuery,
         full_name: filterName,
+        name: filterName,
         email: filterEmail,
-        password: filterPassword,
+        // password: filterPassword,
+        phone: filterMobile,
         mobile: filterMobile,
         start_date: startDate,
         end_date: endDate,
-        status: activeTab.toLowerCase()
+        status: activeTab.toLowerCase() === 'all' ? '' : activeTab.toLowerCase()
       });
     }
   };
@@ -59,7 +63,7 @@ export default function DynamicTable({
   const handleClearFilters = () => {
     setFilterName('');
     setFilterEmail('');
-    setFilterPassword('');
+    // setFilterPassword('');
     setFilterMobile('');
     setSearchQuery('');
     setStartDate('');
@@ -70,12 +74,14 @@ export default function DynamicTable({
       onFilterChange({
         search: '',
         full_name: '',
+        name: '',
         email: '',
-        password: '',
+        // password: '',
+        phone: '',
         mobile: '',
         start_date: '',
         end_date: '',
-        status: activeTab.toLowerCase()
+        status: activeTab.toLowerCase() === 'all' ? '' : activeTab.toLowerCase()
       });
     }
   };
@@ -85,9 +91,11 @@ export default function DynamicTable({
     if (onFilterChange) {
       onFilterChange({
         search: searchQuery,
+        full_name: filterName,
         name: filterName,
         email: filterEmail,
-        password: filterPassword,
+        // password: filterPassword,
+        phone: filterMobile,
         mobile: filterMobile,
         start_date: startDate,
         end_date: endDate,
@@ -140,13 +148,15 @@ export default function DynamicTable({
     if (onFilterChange) {
       onFilterChange({
         search: searchQuery,
+        full_name: filterName,
         name: filterName,
         email: filterEmail,
-        password: filterPassword,
+        // password: filterPassword,
+        phone: filterMobile,
         mobile: filterMobile,
         start_date: startStr,
         end_date: endStr,
-        status: activeTab.toLowerCase()
+        status: activeTab.toLowerCase() === 'all' ? '' : activeTab.toLowerCase()
       });
     }
   };
@@ -222,13 +232,15 @@ export default function DynamicTable({
                       if (onFilterChange) {
                         onFilterChange({
                           search: searchQuery,
+                          full_name: filterName,
                           name: filterName,
                           email: filterEmail,
-                          password: filterPassword,
+                          // password: filterPassword,
+                          phone: filterMobile,
                           mobile: filterMobile,
                           start_date: startDate,
                           end_date: endDate,
-                          status: activeTab.toLowerCase()
+                          status: activeTab.toLowerCase() === 'all' ? '' : activeTab.toLowerCase()
                         });
                       }
                     }}
@@ -298,14 +310,14 @@ export default function DynamicTable({
                     onChange={(e) => setFilterEmail(e.target.value)}
                     onKeyDown={handleKeyPress}
                   />
-                  <input
+                  {/* <input
                     type="text"
                     className="filter-input"
                     placeholder="Password"
                     value={filterPassword}
                     onChange={(e) => setFilterPassword(e.target.value)}
                     onKeyDown={handleKeyPress}
-                  />
+                  /> */}
                   <input
                     type="text"
                     className="filter-input"

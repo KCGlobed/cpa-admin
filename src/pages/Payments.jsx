@@ -108,11 +108,11 @@ export default function Payments({ category }) {
       header: 'Razorpay Signature',
       sortable: true,
     },
-    {
-      key: 'updated_at',
-      header: 'Updated At',
-      sortable: true
-    },
+    // {
+    //   key: 'updated_at',
+    //   header: 'Updated At',
+    //   sortable: true
+    // },
     {
       key: 'created_at',
       header: 'DATE',
