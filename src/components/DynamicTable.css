@@ -387,7 +387,7 @@
 .status-badge {
   display: inline-block;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 50px;
   font-size: 13px;
   font-weight: 700;
   text-transform: capitalize;
@@ -396,16 +396,16 @@
 }
 
 .status-badge.success {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: #d4fee8;
+  color: #065f18;
 }
 
 .status-badge.failed {
-  background-color: #fee2e2;
+  background-color:  #ffc7cb;
   color: #991b1b;
 }
 
 .status-badge.initiated {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color:   #ffc7cb;
+  color:  #991b1b;
 }
