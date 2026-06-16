@@ -62,21 +62,16 @@
 }
 
 .custom-table th {
-  padding: 16px 20px;
-  background: rgba(0, 0, 0, 0.15);
-  color: var(--text-secondary);
+  padding: 8px 16px;
+  background: #8a0a8a;
+  color: #fff;
+  font-size: 12px;
   font-weight: 600;
-  border-bottom: 1px solid var(--border-color);
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.2s, color 0.2s;
+  text-transform: uppercase;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
   white-space: nowrap;
 }
 
-.custom-table th:hover {
-  background: rgb(239, 233, 233);
-  color: var(--text-primary);
-}
 
 .th-content {
   display: flex;
@@ -90,7 +85,7 @@
 
 .custom-table td {
   padding: 16px 20px;
-  color: var(--text-primary);
+  color: black;
   border-bottom: 1px solid var(--border-color);
   transition: background 0.15s;
   white-space: nowrap;
