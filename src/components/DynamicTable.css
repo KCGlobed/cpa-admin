@@ -248,7 +248,7 @@
 }
 
 .custom-table th {
-  padding: 12px 16px;
+  padding: 6px 16px;
   background: #8b008b;
   color: #ffffff;
   font-size: 12px;
@@ -270,7 +270,7 @@
 }
 
 .custom-table td {
-  padding: 12px 16px;
+  padding: 4px 16px;
   color: #111827;
   font-weight: 500;
   white-space: nowrap;
@@ -278,7 +278,7 @@
 
 /* Zebra Striping */
 .custom-table tbody tr:nth-child(even) {
-  background-color: #f9fafb;
+  background-color: #EEE8EF;
 }
 
 .custom-table tbody tr:hover td {
@@ -381,4 +381,31 @@
 
 @keyframes table-spin {
   to { transform: rotate(360deg); }
+}
+
+/* STATUS BADGES */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 90px;
+}
+
+.status-badge.success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.failed {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.initiated {
+  background-color: #e0f2fe;
+  color: #0369a1;
 }

@@ -11,6 +11,7 @@ export default function Leads({ category }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [totalItems, setTotalItems] = useState(0);
+  const [filters, setFilters] = useState({});
 
   // Column definitions for the DynamicTable matching screenshot
   const columns = [
@@ -51,7 +52,9 @@ export default function Leads({ category }) {
     const fetchLeads = async () => {
       setLoading(true);
       try {
-        const data = await getLeads(currentPage, pageSize);
+        const source_form = category === 'cpa' ? 1 : 2;
+        const queryFilters = { ...filters, source_form };
+        const data = await getLeads(currentPage, pageSize, queryFilters);
         setLeadsData(data.results || data.data || data || []);
         setTotalItems(data.count || data.total || data.results?.length || 0);
       } catch (error) {
@@ -62,7 +65,7 @@ export default function Leads({ category }) {
     };
 
     fetchLeads();
-  }, [currentPage, pageSize, category]);
+  }, [currentPage, pageSize, category, filters]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -70,6 +73,11 @@ export default function Leads({ category }) {
 
   const handlePageSizeChange = (newSize) => {
     setPageSize(newSize);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
     setCurrentPage(1);
   };
 
@@ -84,6 +92,7 @@ export default function Leads({ category }) {
         pageSize={pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
+        onFilterChange={handleFilterChange}
         name={"Leads"}
       />
     </div>

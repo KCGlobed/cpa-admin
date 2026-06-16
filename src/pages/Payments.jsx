@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { DollarSign, CheckCircle2, RefreshCw, XCircle } from 'lucide-react';
 import DynamicTable from '../components/DynamicTable';
 import './Pages.css';
 import { getPayments } from '../lib/apis';
@@ -10,14 +9,15 @@ export default function Payments({ category }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [totalItems, setTotalItems] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
     const fetchPayments = async () => {
       setLoading(true);
       try {
-        const data = await getPayments(currentPage, searchQuery, pageSize);
-        // Note: adapted to use page number for server-side pagination.
+        const source_form = category === 'cpa' ? 1 : 2;
+        const queryFilters = { ...filters, source_form };
+        const data = await getPayments(currentPage, pageSize, queryFilters);
         setPaymentsData(data.results || data.data || data || []);
         setTotalItems(data.count || data.total || data.results?.length || 0);
       } catch (error) {
@@ -28,7 +28,7 @@ export default function Payments({ category }) {
     };
 
     fetchPayments();
-  }, [currentPage, pageSize, searchQuery, category]);
+  }, [currentPage, pageSize, category, filters]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -39,8 +39,8 @@ export default function Payments({ category }) {
     setCurrentPage(1);
   };
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
     setCurrentPage(1);
   };
 
@@ -79,11 +79,14 @@ export default function Payments({ category }) {
       key: 'status',
       header: 'Status',
       sortable: true,
-      render: (val) => (
-        <span className={`status-badge ${val}`}>
-          {val}
-        </span>
-      ),
+      render: (val) => {
+        const normalizedVal = val ? String(val).toLowerCase() : '';
+        return (
+          <span className={`status-badge ${normalizedVal}`}>
+            {val}
+          </span>
+        );
+      },
     },
     {
       key: 'currency',
@@ -129,7 +132,7 @@ export default function Payments({ category }) {
         pageSize={pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        onSearch={handleSearch}
+        onFilterChange={handleFilterChange}
         name="Payments"
         pills={['All', 'Success', 'Failed']}
       />

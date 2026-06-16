@@ -1,11 +1,22 @@
 const BASE_URL = 'https://cpa-prod-738131651355.asia-south1.run.app';
 
-export const getLeads = async (page = 1, pageSize = 10) => {
-
+export const getLeads = async (page = 1, pageSize = 20, filters = {}) => {
   const token = localStorage.getItem("accessToken");
+  
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
+
+  // Append any filters that have values
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, String(value));
+    }
+  });
 
   const response = await fetch(
-    `${BASE_URL}/api/careers/careerform_page_list/?pageSize=${pageSize}&page=${page}`,
+    `${BASE_URL}/api/careers/careerform_page_list/?${params.toString()}`,
     {
       method: 'GET',
       headers: {
@@ -22,12 +33,23 @@ export const getLeads = async (page = 1, pageSize = 10) => {
   return response.json();
 };
 
-export const getPayments = async (page = 1, search = "", pageSize = 10) => {
-
+export const getPayments = async (page = 1, pageSize = 20, filters = {}) => {
   const token = localStorage.getItem("accessToken");
 
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
+
+  // Append any filters that have values
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, String(value));
+    }
+  });
+
   const response = await fetch(
-    `${BASE_URL}/api/careers/payment_page_list/?search=${search}&pageSize=${pageSize}&page=${page}`,
+    `${BASE_URL}/api/careers/payment_page_list/?${params.toString()}`,
     {
       method: 'GET',
       headers: {
