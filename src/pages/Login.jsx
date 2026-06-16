@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Mail, Lock, ShieldAlert, LogIn, User } from 'lucide-react';
 import './Login.css';
+// import { useNavigate } from 'react-router-dom';
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('superadmin');
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -43,6 +45,7 @@ export default function Login({ onLoginSuccess }) {
       }));
 
       onLoginSuccess(data);
+      // navigate("/leads");
     } catch (err) {
       setError(err.message);
     } finally {
