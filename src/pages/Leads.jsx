@@ -71,27 +71,25 @@ export default function Leads({ category }) {
 
   const handleExport = async () => {
     try {
-      const source_form = category === "cpa" ? 1 : 2;
-
-      const blob = await exportExcel(
-        "/api/students/student_interview_report_excel/", // Replace with Leads export endpoint if different
+      const data = await exportExcel(
+        "/api/careers/career_excel_report/",
         {
           ...filters,
-          source_form,
+          source: category === "cpa" ? 1 : 2,
         }
       );
 
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "leads.xlsx";
-
-      document.body.appendChild(link);
-      link.click();
-
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      if (data && data.data && data.data[0] && data.data[0].report_url) {
+        const reportUrl = data.data[0].report_url;
+        const link = document.createElement("a");
+        link.href = reportUrl;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error("No report URL found in response:", data);
+      }
     } catch (error) {
       console.error("Export failed:", error);
     }

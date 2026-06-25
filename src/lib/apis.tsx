@@ -92,5 +92,5 @@ export const exportExcel = async (endpoint: string, filters: Record<string, stri
     throw new Error("Failed to export excel");
   }
 
-  return response.blob();
+  return response.json();
 };

@@ -28,27 +28,25 @@ export default function Payments({ category }) {
 
   const handleExport = async () => {
     try {
-      const source_form = category === "cpa" ? 1 : 2;
-
-      const blob = await exportExcel(
-        "/api/students/student_interview_report_excel/",
+      const data = await exportExcel(
+        "/api/careers/payment_excel_report/",
         {
           ...filters,
-          source_form,
+          source: category === "cpa" ? 1 : 2,
         }
       );
 
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "payments.xlsx";
-
-      document.body.appendChild(a);
-      a.click();
-
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      if (data && data.data && data.data[0] && data.data[0].report_url) {
+        const reportUrl = data.data[0].report_url;
+        const a = document.createElement("a");
+        a.href = reportUrl;
+        a.target = "_blank";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        console.error("No report URL found in response:", data);
+      }
     } catch (error) {
       console.error(error);
     }
