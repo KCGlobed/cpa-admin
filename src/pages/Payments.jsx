@@ -33,6 +33,8 @@ export default function Payments({ category }) {
         "/api/careers/payment_excel_report/",
         {
           ...filters,
+          page: currentPage,
+          pageSize,
           source: category === "cpa" ? 1 : 2,
         }
       );
