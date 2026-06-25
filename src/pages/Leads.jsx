@@ -48,22 +48,24 @@ export default function Leads({ category }) {
     },
   ];
 
-  useEffect(() => {
-    const fetchLeads = async () => {
-      setLoading(true);
-      try {
-        const source_form = category === 'cpa' ? 1 : 2;
-        const queryFilters = { ...filters, source_form };
-        const data = await getLeads(currentPage, pageSize, queryFilters);
-        setLeadsData(data.results || data.data || data || []);
-        setTotalItems(data.count || data.total || data.results?.length || 0);
-      } catch (error) {
-        console.error("Error fetching leads:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchLeads = async () => {
+    setLoading(true);
+    try {
+      const source_form = category === 'cpa' ? 1 : 2;
+      const queryFilters = { ...filters, source_form };
 
+      const data = await getLeads(currentPage, pageSize, queryFilters);
+
+      setLeadsData(data.results || data.data || data || []);
+      setTotalItems(data.count || data.total || data.results?.length || 0);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchLeads();
   }, [currentPage, pageSize, category, filters]);
 
@@ -83,9 +85,9 @@ export default function Leads({ category }) {
 
   return (
     <div className="page-container animate-fade-in">
-      <DynamicTable 
-        columns={columns} 
-        data={leadsData} 
+      <DynamicTable
+        columns={columns}
+        data={leadsData}
         loading={loading}
         totalItems={totalItems}
         currentPage={currentPage}
@@ -94,6 +96,7 @@ export default function Leads({ category }) {
         onPageSizeChange={handlePageSizeChange}
         onFilterChange={handleFilterChange}
         name={"Leads"}
+        onRefresh={fetchLeads}
       />
     </div>
   );

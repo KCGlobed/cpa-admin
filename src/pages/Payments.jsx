@@ -11,22 +11,22 @@ export default function Payments({ category }) {
   const [totalItems, setTotalItems] = useState(0);
   const [filters, setFilters] = useState({});
 
-  useEffect(() => {
-    const fetchPayments = async () => {
-      setLoading(true);
-      try {
-        const source_form = category === 'cpa' ? 1 : 2;
-        const queryFilters = { ...filters, source_form };
-        const data = await getPayments(currentPage, pageSize, queryFilters);
-        setPaymentsData(data.results || data.data || data || []);
-        setTotalItems(data.count || data.total || data.results?.length || 0);
-      } catch (error) {
-        console.error("Error fetching payments:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchPayments = async () => {
+    setLoading(true);
+    try {
+      const source_form = category === 'cpa' ? 1 : 2;
+      const queryFilters = { ...filters, source_form };
+      const data = await getPayments(currentPage, pageSize, queryFilters);
+      setPaymentsData(data.results || data.data || data || []);
+      setTotalItems(data.count || data.total || data.results?.length || 0);
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchPayments();
   }, [currentPage, pageSize, category, filters]);
 
@@ -123,10 +123,10 @@ export default function Payments({ category }) {
 
   return (
     <div className="page-container animate-fade-in">
-      <DynamicTable 
-        columns={columns} 
-        data={paymentsData} 
-        loading={loading} 
+      <DynamicTable
+        columns={columns}
+        data={paymentsData}
+        loading={loading}
         totalItems={totalItems}
         currentPage={currentPage}
         pageSize={pageSize}
@@ -135,6 +135,7 @@ export default function Payments({ category }) {
         onFilterChange={handleFilterChange}
         name="Payments"
         pills={['All', 'Success', 'Failed']}
+        onRefresh={fetchPayments}
       />
     </div>
   );
