@@ -75,6 +75,8 @@ export default function Leads({ category }) {
         "/api/careers/career_excel_report/",
         {
           ...filters,
+          page: currentPage,
+          pageSize,
           source: category === "cpa" ? 1 : 2,
         }
       );
