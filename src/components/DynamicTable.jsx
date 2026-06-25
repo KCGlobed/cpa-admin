@@ -15,7 +15,8 @@ export default function DynamicTable({
   name,
   pills = [],
   onFilterChange,
-  onRefresh
+  onRefresh,
+  onExport
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterName, setFilterName] = useState('');
@@ -351,7 +352,7 @@ export default function DynamicTable({
             </div>
           )}
 
-          <button className="action-btn">
+          <button onClick={onExport} className="action-btn">
             Export
           </button>
 
