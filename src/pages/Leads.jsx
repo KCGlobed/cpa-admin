@@ -3,7 +3,7 @@ import { TrendingUp, Users, CheckCircle, AlertCircle } from 'lucide-react';
 import DynamicTable from '../components/DynamicTable';
 import './Pages.css';
 import { useEffect, useState } from "react";
-import { getLeads } from "../lib/apis";
+import { getLeads, exportExcel } from "../lib/apis";
 
 export default function Leads({ category }) {
   const [leadsData, setLeadsData] = useState([]);
@@ -69,6 +69,34 @@ export default function Leads({ category }) {
     fetchLeads();
   }, [currentPage, pageSize, category, filters]);
 
+  const handleExport = async () => {
+    try {
+      const source_form = category === "cpa" ? 1 : 2;
+
+      const blob = await exportExcel(
+        "/api/students/student_interview_report_excel/", // Replace with Leads export endpoint if different
+        {
+          ...filters,
+          source_form,
+        }
+      );
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "leads.xlsx";
+
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Export failed:", error);
+    }
+  };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -97,6 +125,7 @@ export default function Leads({ category }) {
         onFilterChange={handleFilterChange}
         name={"Leads"}
         onRefresh={fetchLeads}
+        onExport={handleExport}
       />
     </div>
   );

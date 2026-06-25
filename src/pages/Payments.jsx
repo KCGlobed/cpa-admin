@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DynamicTable from '../components/DynamicTable';
 import './Pages.css';
-import { getPayments } from '../lib/apis';
+import { getPayments, exportExcel } from '../lib/apis';
 
 export default function Payments({ category }) {
   const [paymentsData, setPaymentsData] = useState([]);
@@ -23,6 +23,34 @@ export default function Payments({ category }) {
       console.error("Error fetching payments:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      const source_form = category === "cpa" ? 1 : 2;
+
+      const blob = await exportExcel(
+        "/api/students/student_interview_report_excel/",
+        {
+          ...filters,
+          source_form,
+        }
+      );
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "payments.xlsx";
+
+      document.body.appendChild(a);
+      a.click();
+
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -136,6 +164,7 @@ export default function Payments({ category }) {
         name="Payments"
         pills={['All', 'Success', 'Failed']}
         onRefresh={fetchPayments}
+        onExport={handleExport}
       />
     </div>
   );
