@@ -56,8 +56,8 @@ export default function Leads({ category }) {
 
       const data = await getLeads(currentPage, pageSize, queryFilters);
 
-      setLeadsData(data.results || data.data || data || []);
-      setTotalItems(data.count || data.total || data.results?.length || 0);
+      setLeadsData(data.data || []);
+      setTotalItems(data.pagination?.total_results || 0);
     } catch (error) {
       console.error("Error fetching leads:", error);
     } finally {

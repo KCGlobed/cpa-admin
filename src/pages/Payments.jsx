@@ -17,8 +17,9 @@ export default function Payments({ category }) {
       const source_form = category === 'cpa' ? 1 : 2;
       const queryFilters = { ...filters, source_form };
       const data = await getPayments(currentPage, pageSize, queryFilters);
-      setPaymentsData(data.results || data.data || data || []);
-      setTotalItems(data.count || data.total || data.results?.length || 0);
+      setPaymentsData(data.data || []);
+      setTotalItems(data.pagination?.total_results || 0);
+
     } catch (error) {
       console.error("Error fetching payments:", error);
     } finally {
