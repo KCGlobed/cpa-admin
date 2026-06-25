@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, ChevronDown, ChevronUp, ChevronsUpDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Inbox, Loader2, Filter, RefreshCw, Download, Columns } from 'lucide-react';
 import './DynamicTable.css';
 
@@ -61,6 +61,10 @@ export default function DynamicTable({
       });
     }
   };
+
+  useEffect(() => {
+    console.log(data.totalItems)
+  }, [])
 
   const handleClearFilters = () => {
     setFilterName('');
