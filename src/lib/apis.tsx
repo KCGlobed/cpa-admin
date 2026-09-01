@@ -1,4 +1,4 @@
-const BASE_URL = 'https://cpa-prod-738131651355.asia-south1.run.app';
+const BASE_URL = 'https://cpa-backend.kcglobed.com';
 
 export const getLeads = async (page = 1, pageSize = 20, filters = {}) => {
   const token = localStorage.getItem("accessToken");
